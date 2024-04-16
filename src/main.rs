@@ -52,6 +52,10 @@ async fn main() -> Result<(), Error> {
             if curr < todo_len - 1 {
                 curr += 1;
             }
+        } else if key == Key::Char('k') {
+            if curr > 0 {
+                curr -= 1;
+            }
         }
     }
 }

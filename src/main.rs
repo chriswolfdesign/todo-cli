@@ -1,6 +1,8 @@
+use colored::Colorize;
 use reqwest::Error;
 use serde::Deserialize;
-use colored::Colorize;
+
+use console::{Key, Term};
 
 #[derive(Deserialize, Debug)]
 struct Todo {
@@ -34,13 +36,22 @@ fn print_todos(todos: Vec<Todo>, curr: usize) {
 
 #[tokio::main]
 async fn main() -> Result<(), Error> {
-    clear_terminal();
+    let mut curr = 0;
+    loop {
+        clear_terminal();
 
-    let todos = get_todos().await?;
+        let todos = get_todos().await?;
+        let todo_len = todos.len();
 
-    let curr = 0;
+        print_todos(todos, curr);
 
-    print_todos(todos, curr);
+        let term = Term::stdout();
+        let key = term.read_key().unwrap();
 
-    return Ok(());
+        if key == Key::Char('j') {
+            if curr < todo_len - 1 {
+                curr += 1;
+            }
+        }
+    }
 }

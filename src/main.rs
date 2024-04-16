@@ -27,9 +27,17 @@ async fn get_todos() -> Result<Vec<Todo>, Error> {
 fn print_todos(todos: Vec<Todo>, curr: usize) {
     for (index, todo) in todos.iter().enumerate() {
         if index == curr {
-            println!("{}", todo.text.black().on_white());
+            if todo.completed {
+            println!("{}", todo.text.black().on_white().strikethrough());
+            } else {
+                println!("{}", todo.text.black().on_white());
+            }
         } else {
-            println!("{}", todo.text);
+            if todo.completed {
+                println!("{}", todo.text.strikethrough());
+            } else {
+                println!("{}", todo.text);
+            }
         }
     }
 }
